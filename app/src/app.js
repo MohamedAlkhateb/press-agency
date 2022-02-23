@@ -17,3 +17,5 @@ const viewerRoutes = require("../../routes/viewer.routes");
 app.use("/api/viewer", viewerRoutes);
 
 app.get("*", (req, res) => res.send({ error: "invalide url" }));
+
+module.exports = app;
