@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
+let regex = new RegExp(
+  /^(?!.\s)(?=.[A-Z])(?=.[a-z])(?=.[0-9])(?=.[~`!@#$%^&()--+={}\[\]|\\:;"'<>,.?/_₹]).{10,16}$/
+);
+
 const userSchema = mongoose.Schema(
   {
     firstName: {
@@ -26,6 +30,11 @@ const userSchema = mongoose.Schema(
         if (!validator.isEmail(val)) throw new Error("Invalid email");
       },
     },
+    password: {
+      type: String,
+      required: true,
+      match: regex,
+    },
     image: {
       type: String,
     },
@@ -34,49 +43,9 @@ const userSchema = mongoose.Schema(
     },
     userRole: {
       type: String,
-      enum: ["user", "editor", "user"],
+      enum: ["user", "editor", "admin"],
       default: "user",
     },
-    questions: [
-      {
-        sender: {
-          type: String,
-          trim: true,
-          required: true,
-        },
-        content: {
-          type: String,
-          trim: true,
-          required: true,
-          min: 5,
-          max: 100,
-        },
-        isAnswered: {
-          type: Boolean,
-          default: false,
-        },
-      },
-    ],
-    answers: [
-      {
-        reciever: {
-          type: String,
-          trim: true,
-          required: true,
-        },
-        content: {
-          type: String,
-          trim: true,
-          required: true,
-          min: 2,
-          max: 150,
-        },
-        isAnswerExist: {
-          type: Boolean,
-          default: false,
-        },
-      },
-    ],
     tokens: [
       {
         token: {

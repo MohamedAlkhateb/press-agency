@@ -38,6 +38,16 @@ const postSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    comments: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: "user",
+        },
+        type: String,
+      },
+    ],
   },
   { timeStamp: true }
 );
