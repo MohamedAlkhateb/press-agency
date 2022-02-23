@@ -40,12 +40,15 @@ const postSchema = mongoose.Schema(
     },
     comments: [
       {
-        userId: {
+        viewerId: {
           type: mongoose.Schema.Types.ObjectId,
           required: true,
           ref: "user",
         },
-        type: String,
+        content: {
+          type: String,
+          required: true,
+        },
       },
     ],
   },
