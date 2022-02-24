@@ -11,6 +11,7 @@ const postSchema = mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      unique: true,
     },
     content: {
       type: String,
@@ -55,6 +56,6 @@ const postSchema = mongoose.Schema(
   { timeStamp: true }
 );
 
-const post = mongoose.model("post",postSchema)
+const post = mongoose.model("post", postSchema);
 
-module.exports= post
+module.exports = post;

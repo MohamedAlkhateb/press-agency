@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
 
 let regex = new RegExp(
   /^(?!.\s)(?=.[A-Z])(?=.[a-z])(?=.[0-9])(?=.[~`!@#$%^&()--+={}\[\]|\\:;"'<>,.?/_₹]).{10,16}$/
@@ -59,22 +59,14 @@ const userSchema = mongoose.Schema(
   },
   { timeStamp: true }
 );
-// encrypt password , 8=> random number could be any number between  1 ~10 
-userSchema.pre("save",async function(){
- 
-  if (this.isModified("password")){
-      this.password= await bcrypt.hash(this.password,8)
+// encrypt password , 8=> random number could be any number between  1 ~10
+userSchema.pre("save", async function () {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 8);
   }
-
-})
-userSchema.static.login= async function(){
-// user pasword and email 
- const userData = await user.findOne({email})
-//check user email 
-
-// check user password 
-
-// return user data if valid login
-}
+});
+userSchema.statics.login = async function () {
+  const userData = await user.findOne({ email });
+};
 const user = mongoose.model("user", userSchema);
 module.exports = user;
