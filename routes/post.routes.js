@@ -1,8 +1,8 @@
-const router = require("express").Router();
-const postController = require("../app/controller/post.controller");
-const auth = require("../middleware/auth");
+// const router = require("express").Router();
+// const postController = require("../app/controller/post.controller");
+// const editorAuth = require("../middleware/editorAuth");
 
-router.post("/addPost", auth, postController.addPost);
-router.delete("/delPost/:id", auth, postController.deletePost);
+// router.post("/addPost", editorAuth, postController.addPost);
+// router.delete("/delPost/:id", editorAuth, postController.deletePost);
 
-module.exports = router;
+// module.exports = router;

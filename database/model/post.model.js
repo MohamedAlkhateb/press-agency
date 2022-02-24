@@ -56,6 +56,9 @@ const postSchema = mongoose.Schema(
   { timeStamp: true }
 );
 
+postSchema.pre("save", async function(){
+})
+
 const post = mongoose.model("post", postSchema);
 
 module.exports = post;
