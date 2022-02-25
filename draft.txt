@@ -4,9 +4,30 @@ user
     "email":"alkhateb118@gmail.com",
     "firstName":"Mohamed",
     "lastName":"Alkhateb",
-    "birthDate":"01/01/1967",
+    "birthDate":"01/01/1900",
+    "userRole": "admin"
+}
+
+{
+    "password":"reham",
+    "email":"reham@gmail.com",
+    "firstName":"reham",
+    "lastName":"hesham",
+    "birthDate":"01/01/1900",
     "userRole": "editor"
 }
+
+{
+    "password":"walid",
+    "email":"walid@gmail.com",
+    "firstName":"walid",
+    "lastName":"mohamed",
+    "birthDate":"01/01/1967",
+    "userRole": "viewer"
+}
+
+--------------------------------------------
+--------------------------------------------
 
 post
 {
@@ -14,6 +35,9 @@ post
     "content":"The most loved player in the world",
     "articleType":"sports"
 }
+
+--------------------------------------------
+--------------------------------------------
 
 routes:
 user:

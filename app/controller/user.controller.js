@@ -7,6 +7,7 @@ class User {
   static register = async (req, res) => {
     try {
       const userData = new userModel(req.body);
+      if (userData.userRole == "admin") throw new Error("Only admins can add admins");
       await userData.save();
       res.send({
         apiStatus: true,

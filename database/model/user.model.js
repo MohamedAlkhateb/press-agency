@@ -43,8 +43,8 @@ const userSchema = mongoose.Schema(
     },
     userRole: {
       type: String,
-      enum: ["user", "editor", "admin"],
-      default: "user",
+      enum: ["viewer", "editor", "admin"],
+      required: true,
     },
     tokens: [
       {

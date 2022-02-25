@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const editorAuth = async (req, res, next) => {
   try {
     if (req.user.userRole != "editor") throw new Error("Must be an editor");
