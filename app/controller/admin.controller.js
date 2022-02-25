@@ -1,4 +1,3 @@
-const req = require("express/lib/request");
 const postModel = require("../../database/model/post.model");
 const userModel = require("../../database/model/user.model");
 
@@ -14,7 +13,7 @@ class Admin {
     } catch (e) {
       res.send({
         apiStatus: false,
-        data: e.message,
+        data: e.message,  
         message: "couldn't get the pending posts",
       });
     }
@@ -62,6 +61,22 @@ class Admin {
         apiStatus: false,
         data: e.message,
         message: "error showing users",
+      });
+    }
+  };
+  static showAllAdmins = async (req, res) => {
+    try {
+      const admins = await userModel.find({ userRole: "admin" });
+      res.send({
+        apiStatus: true,
+        data: admins,
+        message: "admins showed successfuly",
+      });
+    } catch (e) {
+      res.send({
+        apiStatus: false,
+        data: e.message,
+        message: "error showing admins",
       });
     }
   };

@@ -10,6 +10,7 @@ router.get(
   adminController.showPendingPosts
 );
 router.get("/showAllViewers", auth, adminAuth, adminController.showAllViewers);
+router.get("/showAllAdmins", auth, adminAuth, adminController.showAllAdmins);
 router.get("/showAllEditors", auth, adminAuth, adminController.showAllEditors);
 router.get(
   "/showAcceptedPosts",
