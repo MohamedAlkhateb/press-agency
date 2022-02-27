@@ -10,13 +10,13 @@ class Post {
       res.send({
         apiStatus: true,
         data: post,
-        message: "post by title returned",
+        message: "posts by title returned",
       });
     } catch (e) {
       res.send({
         apiStatus: false,
         data: e.message,
-        message: "couldn't get the post by title",
+        message: "couldn't get the posts by title",
       });
     }
   };
@@ -40,5 +40,5 @@ class Post {
     }
   };
 }
-// add comment, increament (number of viewers, number of )
+
 module.exports = Post;
