@@ -43,9 +43,15 @@ const userSchema = mongoose.Schema(
     },
     userRole: {
       type: String,
-      enum: ["user", "editor", "admin"],
-      default: "user",
+      enum: ["viewer", "editor", "admin"],
+      required: true,
     },
+    likedPosts:{
+      postid:{
+        
+      }
+    },
+    isVerified: { type: Boolean, default: false },
     tokens: [
       {
         token: {
@@ -70,7 +76,7 @@ userSchema.statics.login = async function (email, password) {
 
   //check user email
   if (!userData) {
-    throw new Error("invalid Email ");
+    throw new Error("invalid Email");
   }
 
   // check user password
@@ -83,9 +89,9 @@ userSchema.statics.login = async function (email, password) {
 };
 userSchema.methods.generateToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user.__id }, process.env.jwtKey);
+  const token = jwt.sign({ _id: user._id }, process.env.jwtKey);
   user.tokens = user.tokens.concat({ token });
-  user.save();
+  await user.save();
   return token;
 };
 const user = mongoose.model("user", userSchema);

@@ -1,16 +1,25 @@
 const userModel = require("../../database/model/user.model");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
-const upload = multer({ dest: 'uploads/' })
-
-class user {
+const upload = multer({ dest: "uploads/" });
+const otp = require("../../helper/otpGenerator");
+const sendEmail = require("../../helper/sendEmail");
+class User {
   static register = async (req, res) => {
     try {
+      const userOTP = otp(6);
       const userData = new userModel(req.body);
-
+      if (userData.userRole == "admin")
+        throw new Error("Only admins can add admins");
+      sendEmail(
+        userData.email,
+        `your OTP is ${userOTP} pless activate your account`,
+        "Press Agency",
+        "Welcom"
+      );
+      userData.otp = userOTP;
+      await userData.generateToken();
       await userData.save();
-      // upload profile pic
-
       res.send({
         apiStatus: true,
         data: userData,
@@ -28,6 +37,9 @@ class user {
   static login = async (req, res) => {
     try {
       const userData = await userModel.login(req.body.email, req.body.password);
+      if (userData.otp) {
+        throw new Error("Pless activate your account first");
+      }
       const token = await userData.generateToken();
       res.send({
         apiStatus: true,
@@ -53,7 +65,6 @@ class user {
       await req.user.save();
       res.send({
         apiStatus: true,
-
         message: "logged out",
       });
     } catch (e) {
@@ -67,8 +78,6 @@ class user {
 
   static deleteSingleAcount = async (req, res) => {
     try {
-    
-
       const user = await userModel.deleteOne({ id: req.user._id });
       res.send({
         apiStatus: true,
@@ -92,9 +101,8 @@ class user {
       const userUpdated = await userModel.updateOne(
         { id: req.user._id },
         req.body,
-        { upsert: false }
+        { upsert: false, runValidators: true }
       );
-
       res.send({
         apiStatus: true,
         data: userUpdated,
@@ -108,18 +116,47 @@ class user {
     }
   };
 
-  static uploadProfileImage = function ()  {
-    upload.single('avatar')
-    const f = function(req, res, next) {
-      console.log(req.file);
+  static uploadProfileImage = async (req, res) => {
+    try {
+      req.user.image = req.file.destination;
+      await req.user.save();
+      res.send({
+        apiStatus: true,
+        data: req.user,
+      });
+    } catch (e) {
+      res.send({
+        apiStatus: false,
+      });
     }
- f()
-
   };
+
+  static activateAccount = async (req, res) => {
+    try {
+  
+      if (!req.user.otp) {
+        throw new Error("User already varifaed");
+      } else if (req.user.otp == req.body.otp) {
+        req.user.isVerified = true;
+        req.user.otp = null;
+        req.user.tokens = req.user.tokens.filter(
+          (tok) => req.token != tok.token
+        );
+        await req.user.save();
+        res.send({
+          apiStatus: true,
+          data: req.user,
+        });
+      } else {
+        throw new Error("invalid OTP");
+      }
+    } catch (e) {
+      res.send({
+        apiStatus: false,
+        message: e.message,
+      });
+    }
+  };
+ 
 }
-module.exports = user;
-/* "password":"reham",
-"email":"rehamhisham24@gmail.com",
-"firstName":"reham",
-"lastName":"hisham",
-"birthDate":"02/02/2000" */
+module.exports = User;
