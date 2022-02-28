@@ -46,6 +46,12 @@ const userSchema = mongoose.Schema(
       enum: ["viewer", "editor", "admin"],
       required: true,
     },
+    likedPosts:{
+      postid:{
+        
+      }
+    },
+    isVerified: { type: Boolean, default: false },
     tokens: [
       {
         token: {
@@ -76,7 +82,7 @@ userSchema.statics.login = async function (email, password) {
   // check user password
   const validPassword = await bcrypt.compare(password, userData.password);
   if (!validPassword) {
-    throw new Error("invalid password ");
+    throw new Error("invalid password");
   }
   // return user data if valid login
   return userData;

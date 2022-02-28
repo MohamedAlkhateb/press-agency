@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { none } = require("../../middleware/uploadImage");
 
 const postSchema = mongoose.Schema(
   {
@@ -33,14 +34,25 @@ const postSchema = mongoose.Schema(
     numberOfViewers: {
       type: Number,
       default: 0,
+      min: 0,
     },
+    likes: [
+      {
+        userID: {
+          type: mongoose.Schema.Types.ObjectId,
+
+          require: true,
+        },
+      },
+    ],
     numberOfLikes: {
       type: Number,
       default: 0,
+      min: 0,
     },
     comments: [
       {
-        viewerId: {
+        userID: {
           type: mongoose.Schema.Types.ObjectId,
           required: true,
           ref: "user",

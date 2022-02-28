@@ -36,6 +36,7 @@ class Editor {
         req.body,
         { upsert: false, runValidators: true }
       );
+
       res.send({ apiStatus: true, data: post, message: "edited" });
     } catch (e) {
       res.send({
@@ -57,6 +58,28 @@ class Editor {
         apiStatus: false,
         data: e.message,
         message: "couldn't delete the post",
+      });
+    }
+  };
+  static uploadPostImage = async (req, res) => {
+    try {
+      const post = await postModel.findOneAndUpdate(
+        {
+          authorId: req.user._id,
+          _id: req.params.id,
+        },
+        { image: req.file.path },
+        { upsert: false, runValidators: true }
+      );
+
+      await post.save();
+
+      res.send({ apiStatus: true, data: req.post, message: "image uploaded" });
+    } catch (e) {
+      res.send({
+        apiStatus: false,
+        data: e.message,
+        message: "error deleting user",
       });
     }
   };

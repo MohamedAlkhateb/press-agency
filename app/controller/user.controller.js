@@ -2,12 +2,23 @@ const userModel = require("../../database/model/user.model");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
-
+const otp = require("../../helper/otpGenerator");
+const sendEmail = require("../../helper/sendEmail");
 class User {
   static register = async (req, res) => {
     try {
+      const userOTP = otp(6);
       const userData = new userModel(req.body);
-      if (userData.userRole == "admin") throw new Error("Only admins can add admins");
+      if (userData.userRole == "admin")
+        throw new Error("Only admins can add admins");
+      sendEmail(
+        userData.email,
+        `your OTP is ${userOTP} pless activate your account`,
+        "Press Agency",
+        "Welcom"
+      );
+      userData.otp = userOTP;
+      await userData.generateToken();
       await userData.save();
       res.send({
         apiStatus: true,
@@ -22,9 +33,13 @@ class User {
       });
     }
   };
+
   static login = async (req, res) => {
     try {
       const userData = await userModel.login(req.body.email, req.body.password);
+      if (userData.otp) {
+        throw new Error("Pless activate your account first");
+      }
       const token = await userData.generateToken();
       res.send({
         apiStatus: true,
@@ -50,7 +65,6 @@ class User {
       await req.user.save();
       res.send({
         apiStatus: true,
-
         message: "logged out",
       });
     } catch (e) {
@@ -89,7 +103,6 @@ class User {
         req.body,
         { upsert: false, runValidators: true }
       );
-
       res.send({
         apiStatus: true,
         data: userUpdated,
@@ -103,10 +116,47 @@ class User {
     }
   };
 
-  static uploadProfileImage = function () {
-    upload.single("avatar");
-    const f = function (req, res, next) {};
-    f();
+  static uploadProfileImage = async (req, res) => {
+    try {
+      req.user.image = req.file.destination;
+      await req.user.save();
+      res.send({
+        apiStatus: true,
+        data: req.user,
+      });
+    } catch (e) {
+      res.send({
+        apiStatus: false,
+      });
+    }
   };
+
+  static activateAccount = async (req, res) => {
+    try {
+  
+      if (!req.user.otp) {
+        throw new Error("User already varifaed");
+      } else if (req.user.otp == req.body.otp) {
+        req.user.isVerified = true;
+        req.user.otp = null;
+        req.user.tokens = req.user.tokens.filter(
+          (tok) => req.token != tok.token
+        );
+        await req.user.save();
+        res.send({
+          apiStatus: true,
+          data: req.user,
+        });
+      } else {
+        throw new Error("invalid OTP");
+      }
+    } catch (e) {
+      res.send({
+        apiStatus: false,
+        message: e.message,
+      });
+    }
+  };
+ 
 }
 module.exports = User;
