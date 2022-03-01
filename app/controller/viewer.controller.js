@@ -23,7 +23,7 @@ class Post {
   static findPostsByType = async (req, res) => {
     try {
       const posts = await postModel.find({
-        title: req.body.title,
+        title: req.body.articleType,
         articleStatus: "accepted",
       });
       res.send({
@@ -96,16 +96,22 @@ class Post {
   };
   static showPost = async (req, res) => {
     try {
-      const post = await postModel.findByIdAndUpdate(
-        req.params.id,
-        { numberOfViewers: numberOfViewers++ },
-        { runValidators: true }
-      );
-      res.send({
-        apiStatus: true,
-        data: post,
-        message: "post returned",
+      const posts = await postModel.findOne({
+        _id: req.params.id,
+        articleStatus: "accepted",
       });
+
+      if (posts) {
+        posts.numberOfViewers++;
+        posts.save();
+        res.send({
+          apiStatus: true,
+          data: posts,
+          message: "post returned",
+        });
+      } else {
+        throw new Error("Post not accepted");
+      }
     } catch (e) {
       res.send({
         apiStatus: false,
@@ -115,5 +121,6 @@ class Post {
     }
   };
 }
+
 // add comment, increament (number of viewers, number of )
 module.exports = Post;
