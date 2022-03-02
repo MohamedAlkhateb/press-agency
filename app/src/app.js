@@ -2,9 +2,10 @@ const express = require("express");
 // const multer = require("multer");
 // const userController = require("../controller/user.controller");
 // const viewerRoutes = require("../../routes/viewer.routes");
-const postRoutes = require("../../routes/post.routes");
 
 const app = express();
+const cors = require("cors");
+app.use(cors());
 require("dotenv").config();
 require("../../database/connection");
 app.use(express.json());
