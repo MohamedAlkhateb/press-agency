@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { none } = require("../../middleware/uploadImage");
+// const { none } = require("../../middleware/uploadImage");
 
 const postSchema = mongoose.Schema(
   {
