@@ -50,6 +50,7 @@ const userSchema = mongoose.Schema(
     likedPosts: {
       postid: {},
     },
+    // It should be false but we make it true to test frontend
     isVerified: { type: Boolean, default: true },
     tokens: [
       {
