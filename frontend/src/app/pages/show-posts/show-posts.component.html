@@ -1,0 +1,14 @@
+<section class="container my-5">
+  <h2 class="text-primary text-center">Posts</h2>
+  <div class="row" *ngIf="isLoaded; else notLoaded">
+    <div class="alert alert-danger" *ngIf="posts.length == 0">No posts yet</div>
+    <div class="col-md-4 col-12 p-3" *ngFor="let post of posts">
+      <div class="m-3 border border-3 border-primary">
+        <h2 class="text-danger h6 ms-3">Title: {{ post.title }}</h2>
+        <p class="text-muted ms-3">Content: {{ post.content }}</p>
+        <p class="text-muted ms-3">Post type: {{ post.articleType }}</p>
+      </div>
+    </div>
+  </div>
+  <ng-template #notLoaded> Loading... </ng-template>
+</section>

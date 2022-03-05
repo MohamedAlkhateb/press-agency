@@ -1,0 +1,69 @@
+<section class="my-5 container">
+  <div class="alert alert-danger" *ngIf="msg != ''">{{ msg }}</div>
+  <h2 class="text-center text-primary">Register</h2>
+
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
+    <!-- <div class="text-center">
+            <img src="..." class="rounded" alt="...">
+        </div> -->
+    <div class="mb-3">
+      <label>First Name</label>
+      <input
+        placeholder="First Name "
+        class="form-control"
+        formControlName="firstName"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Last Name</label>
+      <input
+        placeholder="Last Name "
+        class="form-control"
+        formControlName="lastName"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Email</label>
+      <input
+        placeholder="Email "
+        class="form-control"
+        formControlName="email"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Password</label>
+      <input
+        formControlName="password"
+        placeholder="password"
+        type="password"
+        class="form-control"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Birthdate</label>
+      <input
+        formControlName="birthDate"
+        placeholder="BirthDate"
+        type="date"
+        class="form-control"
+      />
+      <!-- <div class="alert alert-danger my-3">
+                <p *ngIf="f.birthDate.errors">birth date is required</p>
+            </div> -->
+    </div>
+    <div class="input-group mb-3">
+      <label class="input-group-text" for="inputGroupSelect01">User Role</label>
+      <select
+        class="form-select"
+        formControlName="userRole"
+        id="inputGroupSelect01"
+      >
+        <option value="editor">editor</option>
+        <!-- <option value="viewer">viewer</option> -->
+      </select>
+    </div>
+    <div class="mb-3">
+      <button class="btn btn-primary">Register</button>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,38 @@
+<section class="my-5 container">
+  <h2 class="text-center text-primary">Add Post</h2>
+  <div class="alert alert-danger" *ngIf="msg != ''">{{ msg }}</div>
+  <form [formGroup]="addPostForm" (ngSubmit)="addPost()">
+    <div class="mb-3">
+      <label>Title</label>
+      <input placeholder="Title" class="form-control" formControlName="title" />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlTextarea1">Content</label>
+      <textarea
+        class="form-control"
+        id="exampleFormControlTextarea1"
+        rows="5"
+        placeholder="Content"
+        formControlName="content"
+      ></textarea>
+    </div>
+    <div class="input-group mb-3">
+      <label class="input-group-text" for="inputGroupSelect01"
+        >Article Type</label
+      >
+      <select
+        class="form-select"
+        formControlName="articleType"
+        id="inputGroupSelect01"
+      >
+        <option value="sports">Sports</option>
+        <option value="cinema">Cinema</option>
+        <option value="politics">Politics</option>
+        <option value="religion">Religion</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <button class="btn btn-primary">Add post</button>
+    </div>
+  </form>
+</section>

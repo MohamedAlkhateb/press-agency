@@ -12,15 +12,15 @@ const userSchema = mongoose.Schema(
       type: String,
       trim: true,
       required: true,
-      min: 3,
-      max: 15,
+      minLength: 3,
+      maxLength: 15,
     },
     lastName: {
       type: String,
       trim: true,
       required: true,
-      min: 3,
-      max: 15,
+      minLength: 3,
+      maxLength: 15,
     },
     email: {
       type: String,
@@ -34,6 +34,7 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       required: true,
+      minLength: 3,
     },
     image: {
       type: String,
@@ -46,12 +47,10 @@ const userSchema = mongoose.Schema(
       enum: ["viewer", "editor", "admin"],
       required: true,
     },
-    likedPosts:{
-      postid:{
-        
-      }
+    likedPosts: {
+      postid: {},
     },
-    isVerified: { type: Boolean, default: false },
+    isVerified: { type: Boolean, default: true },
     tokens: [
       {
         token: {

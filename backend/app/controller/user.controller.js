@@ -37,7 +37,7 @@ class User {
   static login = async (req, res) => {
     try {
       const userData = await userModel.login(req.body.email, req.body.password);
-      if (userData.otp) {
+      if (!userData.isVerified) {
         throw new Error("Pless activate your account first");
       }
       const token = await userData.generateToken();
@@ -133,7 +133,6 @@ class User {
 
   static activateAccount = async (req, res) => {
     try {
-  
       if (!req.user.otp) {
         throw new Error("User already varifaed");
       } else if (req.user.otp == req.body.otp) {
@@ -157,6 +156,5 @@ class User {
       });
     }
   };
- 
 }
 module.exports = User;
