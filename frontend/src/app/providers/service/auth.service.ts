@@ -10,7 +10,7 @@ export class AuthService {
   public isLogin: boolean = false;
   public user: User | null;
   public post: Post | null;
-  commonApiUrl = 'http://localhost:3000/';
+  commonApiUrl = 'https://press-agency.herokuapp.com/';
 
   constructor(private _http: HttpClient) {}
 
